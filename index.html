@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft : Le Guide du Débutant</title>
+<meta name="description" content="Guide interactif et illustré pour survivre à vos premiers jours dans Minecraft.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          pixel: ['"Press Start 2P"', 'cursive'],
+        },
+        colors: {
+          mcgreen: { 50:'#f0fdf4',100:'#dcfce7',300:'#86efac',400:'#4ade80',500:'#22c55e',600:'#16a34a',700:'#15803d',900:'#14532d' },
+          wood: { 400:'#c99a5b', 500:'#a97c46', 600:'#8a6238', 700:'#6b4a2a', 800:'#4a331d' },
+          stonemc: { 300:'#a8adb4', 400:'#8b9099', 500:'#6b707a', 600:'#52555e', 700:'#3d3f47' },
+        },
+        boxShadow: {
+          key: '0 4px 0 0 rgba(0,0,0,0.45)',
+          keyPressed: '0 1px 0 0 rgba(0,0,0,0.45)',
+        },
+        animation: {
+          'float-slow': 'float 6s ease-in-out infinite',
+          'float-slower': 'float 9s ease-in-out infinite',
+          'pop': 'pop 0.3s ease',
+          'fadein': 'fadein 0.45s ease',
+        },
+        keyframes: {
+          float: { '0%,100%': { transform: 'translateY(0px) rotate(0deg)' }, '50%': { transform: 'translateY(-14px) rotate(4deg)' } },
+          pop: { '0%': { transform: 'scale(0.5)', opacity: 0 }, '70%': { transform: 'scale(1.08)' }, '100%': { transform: 'scale(1)', opacity: 1 } },
+          fadein: { '0%': { opacity: 0, transform: 'translateY(10px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+  body { background-color: #0b1120; }
+
+  .bg-dots {
+    background-image: radial-gradient(rgba(255,255,255,0.06) 1.5px, transparent 1.5px);
+    background-size: 26px 26px;
+  }
+
+  .pixel-corners {
+    clip-path: polygon(
+      0 8px, 8px 8px, 8px 0,
+      calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+      100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+      8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+  }
+
+  .key-cap {
+    box-shadow: 0 4px 0 0 rgba(0,0,0,0.45);
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .key-cap.key-active {
+    background-color: #16a34a !important;
+    border-color: #4ade80 !important;
+    color: #f0fdf4 !important;
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.45);
+  }
+
+  .action-btn.action-active, .action-btn:hover, .action-btn:focus-visible {
+    background-color: rgba(34,197,94,0.12);
+    border-color: rgba(74,222,128,0.6);
+    color: #86efac;
+  }
+
+  .craft-cell.filled {
+    animation: pop 0.3s ease;
+    border-color: rgba(74,222,128,0.5) !important;
+    background-color: rgba(34,197,94,0.08);
+  }
+
+  .fade-in-panel { animation: fadein 0.45s ease; }
+
+  .recipe-btn.active, .tool-pill.active, .material-pill.active, .wood-pill.active, .armor-piece-pill.active, .armor-material-pill.active {
+    background-color: rgba(34,197,94,0.14) !important;
+    border-color: #22c55e !important;
+    color: #d1fae5 !important;
+  }
+
+  .guide-tab-btn.active-tab {
+    background-color: #16a34a;
+    color: #052e16;
+    box-shadow: 0 4px 0 0 rgba(0,0,0,0.35);
+  }
+
+  .timeline-line::before {
+    content: "";
+    position: absolute;
+    left: 19px;
+    top: 2.5rem;
+    bottom: -1rem;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(74,222,128,0.5), rgba(74,222,128,0.05));
+  }
+  .timeline-item:last-child .timeline-line::before { display: none; }
+
+  /* Accordion (CSS grid-rows trick, no JS height calc needed) */
+  .accordion-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+  }
+  .accordion-item.open .accordion-panel { grid-template-rows: 1fr; }
+  .accordion-panel-inner { overflow: hidden; min-height: 0; }
+  .accordion-chevron { transition: transform 0.3s ease; }
+  .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
+  .accordion-item.open .accordion-header { background-color: rgba(34,197,94,0.06); }
+
+  .prog-cell { transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease; }
+  .prog-cell:hover { background-color: rgba(34,197,94,0.15); border-color: #22c55e; transform: translateY(-2px); }
+</style>
+</head>
+<body class="font-sans bg-slate-950 text-slate-200 antialiased">
+
+<!-- NAV -->
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur bg-slate-950/70 border-b border-white/5">
+  <nav class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <a href="#hero" class="flex items-center gap-2 font-extrabold text-lg tracking-tight text-white">
+      <span class="text-2xl">⛏️</span>
+      <span>MC <span class="text-mcgreen-400">Guide</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-1 text-sm font-medium">
+      <a href="#controls" class="px-4 py-2 rounded-lg hover:bg-white/5 hover:text-white transition-colors">Contrôles</a>
+      <a href="#guide" class="px-4 py-2 rounded-lg hover:bg-white/5 hover:text-white transition-colors">Découvrir</a>
+      <a href="#crafting" class="px-4 py-2 rounded-lg hover:bg-white/5 hover:text-white transition-colors">Simulateur</a>
+      <a href="#guide" class="ml-2 px-4 py-2 rounded-lg bg-mcgreen-600 hover:bg-mcgreen-500 text-white transition-colors">Commencer</a>
+    </div>
+    <button id="mobileMenuBtn" class="md:hidden text-white p-2" aria-label="Menu">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </nav>
+  <div id="mobileMenu" class="hidden md:hidden flex flex-col px-5 pb-4 gap-1 text-sm font-medium bg-slate-950/95 border-b border-white/5">
+    <a href="#controls" class="px-4 py-2 rounded-lg hover:bg-white/5">Contrôles</a>
+    <a href="#guide" class="px-4 py-2 rounded-lg hover:bg-white/5">Découvrir</a>
+    <a href="#crafting" class="px-4 py-2 rounded-lg hover:bg-white/5">Simulateur</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-dots pt-16">
+  <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/95 to-slate-950"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/40 via-transparent to-transparent"></div>
+
+  <!-- floating blocky decorations -->
+  <div class="absolute top-24 left-[8%] w-14 h-14 rounded-md bg-mcgreen-600/80 border-4 border-mcgreen-700 shadow-xl animate-float-slow hidden sm:block"></div>
+  <div class="absolute top-40 right-[12%] w-10 h-10 rounded-md bg-wood-500/80 border-4 border-wood-700 shadow-xl animate-float-slower hidden sm:block"></div>
+  <div class="absolute bottom-32 left-[18%] w-8 h-8 rounded-md bg-stonemc-400/80 border-4 border-stonemc-600 shadow-xl animate-float-slow hidden sm:block"></div>
+  <div class="absolute bottom-48 right-[20%] w-12 h-12 rounded-md bg-amber-800/80 border-4 border-amber-900 shadow-xl animate-float-slower hidden sm:block"></div>
+  <div class="absolute top-1/2 right-[6%] w-6 h-6 rounded-md bg-yellow-500/80 border-4 border-yellow-700 shadow-xl animate-float-slow hidden md:block"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+    <span class="inline-block font-pixel text-[10px] sm:text-xs text-mcgreen-400 bg-mcgreen-500/10 border border-mcgreen-500/30 px-4 py-2 rounded-full mb-8 pixel-corners">
+      ★ GUIDE INTERACTIF ★
+    </span>
+    <h1 class="text-4xl sm:text-6xl md:text-7xl font-black text-white leading-tight tracking-tight">
+      Minecraft :<br>
+      <span class="text-mcgreen-400">Le Guide du Débutant</span>
+    </h1>
+    <p class="mt-6 text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+      Un guide interactif pour apprendre les contrôles, explorer les grandes mécaniques du jeu — nourriture,
+      villageois, construction, armures, outils — et vous équiper comme un aventurier chevronné.
+    </p>
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#guide" class="pixel-corners group inline-flex items-center gap-2 bg-mcgreen-600 hover:bg-mcgreen-500 text-white font-bold text-lg px-8 py-4 shadow-key hover:shadow-keyPressed hover:translate-y-1 transition-all">
+        Commencer l'aventure
+        <span class="group-hover:translate-x-1 transition-transform">→</span>
+      </a>
+      <a href="#controls" class="inline-flex items-center gap-2 text-slate-300 hover:text-white font-semibold px-6 py-4 transition-colors">
+        Voir les contrôles ⌨️
+      </a>
+    </div>
+
+    <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
+      <div class="bg-slate-900/60 border border-white/5 rounded-xl p-4">
+        <div class="text-2xl">🪵</div>
+        <p class="mt-1 text-xs text-slate-400">Jour 1 : le bois</p>
+      </div>
+      <div class="bg-slate-900/60 border border-white/5 rounded-xl p-4">
+        <div class="text-2xl">🏠</div>
+        <p class="mt-1 text-xs text-slate-400">Un abri sûr</p>
+      </div>
+      <div class="bg-slate-900/60 border border-white/5 rounded-xl p-4">
+        <div class="text-2xl">🔥</div>
+        <p class="mt-1 text-xs text-slate-400">Feu &amp; lumière</p>
+      </div>
+      <div class="bg-slate-900/60 border border-white/5 rounded-xl p-4">
+        <div class="text-2xl">⚔️</div>
+        <p class="mt-1 text-xs text-slate-400">Équipement</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTROLS DASHBOARD -->
+<section id="controls" class="scroll-mt-16 py-24 px-5 bg-slate-950 border-t border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="font-pixel text-[10px] text-mcgreen-400">01 · LES BASES</span>
+      <h2 class="mt-4 text-3xl sm:text-4xl font-black text-white">Le tableau de bord des contrôles</h2>
+      <p class="mt-3 text-slate-400 max-w-2xl mx-auto">Survolez ou cliquez sur une action pour voir instantanément quelle touche l'active sur le clavier.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10 items-start">
+      <!-- Actions list -->
+      <div class="grid sm:grid-cols-2 gap-3">
+        <button class="action-btn" data-keys="Z">Avancer</button>
+        <button class="action-btn" data-keys="Q">Aller à gauche</button>
+        <button class="action-btn" data-keys="S">Reculer</button>
+        <button class="action-btn" data-keys="D">Aller à droite</button>
+        <button class="action-btn" data-keys="SPACE">Sauter</button>
+        <button class="action-btn" data-keys="E">Ouvrir l'inventaire</button>
+        <button class="action-btn" data-keys="MOUSE_LEFT">Casser un bloc / Attaquer</button>
+        <button class="action-btn" data-keys="MOUSE_RIGHT">Placer un bloc / Utiliser</button>
+      </div>
+
+      <!-- Visual keyboard + mouse -->
+      <div class="bg-slate-900/60 border border-white/5 rounded-2xl p-6 sm:p-8">
+        <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-6 text-center">Aperçu clavier &amp; souris</p>
+
+        <div class="flex flex-col items-center gap-3">
+          <!-- ZQSD cluster -->
+          <div class="grid grid-cols-3 grid-rows-2 gap-2 w-fit">
+            <div></div>
+            <div data-key="Z" class="key-cap w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-slate-800 border-2 border-slate-700 flex items-center justify-center font-bold text-lg text-white">Z</div>
+            <div></div>
+            <div data-key="Q" class="key-cap w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-slate-800 border-2 border-slate-700 flex items-center justify-center font-bold text-lg text-white">Q</div>
+            <div data-key="S" class="key-cap w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-slate-800 border-2 border-slate-700 flex items-center justify-center font-bold text-lg text-white">S</div>
+            <div data-key="D" class="key-cap w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-slate-800 border-2 border-slate-700 flex items-center justify-center font-bold text-lg text-white">D</div>
+          </div>
+          <p class="text-[11px] text-slate-500">Déplacement</p>
+
+          <!-- E key -->
+          <div class="flex items-center gap-3 mt-2">
+            <div data-key="E" class="key-cap w-14 h-14 rounded-lg bg-slate-800 border-2 border-slate-700 flex items-center justify-center font-bold text-lg text-white">E</div>
+            <p class="text-xs text-slate-500">Inventaire</p>
+          </div>
+
+          <!-- Space bar -->
+          <div class="mt-2 w-full">
+            <div data-key="SPACE" class="key-cap w-full h-12 rounded-lg bg-slate-800 border-2 border-slate-700 flex items-center justify-center font-bold text-sm text-white tracking-widest">ESPACE</div>
+            <p class="text-[11px] text-slate-500 text-center mt-1">Sauter</p>
+          </div>
+
+          <!-- Mouse -->
+          <div class="mt-6 flex flex-col items-center gap-2">
+            <div class="relative w-20 h-28 rounded-t-full rounded-b-2xl bg-slate-800 border-2 border-slate-700 flex overflow-hidden">
+              <div data-key="MOUSE_LEFT" class="key-cap w-1/2 h-1/2 border-r border-slate-600 flex items-center justify-center text-[10px] text-slate-400 font-bold">G</div>
+              <div data-key="MOUSE_RIGHT" class="key-cap w-1/2 h-1/2 flex items-center justify-center text-[10px] text-slate-400 font-bold" style="margin-left:50%; position:absolute; right:0; top:0;">D</div>
+              <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-slate-800"></div>
+            </div>
+            <p class="text-[11px] text-slate-500">Clic gauche (casser) · Clic droit (placer/utiliser)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="mt-10 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic max-w-3xl mx-auto">
+      💡 <span class="font-semibold not-italic text-mcgreen-400">Astuce :</span> ces touches sont celles d'un clavier AZERTY (par défaut en français). Sur QWERTY, ce sont W A S D.
+    </blockquote>
+  </div>
+</section>
+
+<!-- GUIDE (ACCORDION) -->
+<section id="guide" class="scroll-mt-16 py-24 px-5 bg-slate-900/40 border-t border-white/5">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="font-pixel text-[10px] text-mcgreen-400">02 · À DÉCOUVRIR</span>
+      <h2 class="mt-4 text-3xl sm:text-4xl font-black text-white">Les grandes facettes du jeu</h2>
+      <p class="mt-3 text-slate-400 max-w-2xl mx-auto">Dépliez chaque thème pour comprendre comment il fonctionne, sans ordre imposé.</p>
+    </div>
+
+    <div class="space-y-4" id="accordionWrap">
+
+      <!-- FACET 1: NOURRITURE / AGRICULTURE / ELEVAGE -->
+      <div class="accordion-item open bg-slate-900/60 border border-white/10 rounded-2xl overflow-hidden">
+        <button class="accordion-header w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left transition-colors">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-mcgreen-400 text-xs shrink-0">01</span>
+            <div>
+              <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2"><span class="w-6 h-6 rounded bg-slate-800/60 border border-white/10 inline-flex items-center justify-center overflow-hidden shrink-0"><img src="icon/items/bread.png" alt="" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'"></span> Nourriture, Agriculture &amp; Élevage</h3>
+              <p class="text-xs sm:text-sm text-slate-500">Faim, cultures, reproduction des animaux</p>
+            </div>
+          </div>
+          <svg class="accordion-chevron w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel-inner px-5 sm:px-6 pb-6">
+            <p class="text-slate-400">Une barre de 20 points de faim se vide avec le temps et l'effort. En dessous de certains seuils, vous ne régénérez plus de vie et ne pouvez plus courir ; à 0, vous perdez de la vie. Il faut donc toujours garder de quoi manger.</p>
+
+            <div class="space-y-8 pt-6">
+              <div class="timeline-item timeline-line relative pl-14">
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-mcgreen-600 flex items-center justify-center font-bold text-white">1</div>
+                <h4 class="font-bold text-white">Labourez la terre</h4>
+                <p class="mt-1 text-slate-400">Utilisez une houe (<span class="text-mcgreen-400 font-semibold">clic droit</span>) sur un bloc d'herbe ou de terre proche d'une source d'eau pour créer de la terre agricole.</p>
+              </div>
+              <div class="timeline-item timeline-line relative pl-14">
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-mcgreen-600 flex items-center justify-center font-bold text-white">2</div>
+                <h4 class="font-bold text-white">Plantez vos cultures</h4>
+                <p class="mt-1 text-slate-400">Graines de blé, carottes, pommes de terre ou betteraves : plantez-les sur la terre agricole et attendez qu'elles poussent en plusieurs stades.</p>
+              </div>
+              <div class="timeline-item relative pl-14">
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-mcgreen-600 flex items-center justify-center font-bold text-white">3</div>
+                <h4 class="font-bold text-white">Récoltez et cuisinez</h4>
+                <p class="mt-1 text-slate-400">Une fois mûres, récoltez vos cultures. La viande et certains légumes restaurent bien plus de faim une fois cuits au four ou sur un feu de camp.</p>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Élever des animaux</p>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm border-separate border-spacing-y-2">
+                  <tbody id="breedingTable"></tbody>
+                </table>
+              </div>
+              <p class="text-xs text-slate-500 mt-2">Donnez le bon aliment à 2 animaux adultes de la même espèce pour déclencher le mode amour et obtenir un bébé.</p>
+            </div>
+
+            <div class="mt-8">
+              <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Valeurs nutritives (points de faim)</p>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="foodTable"></div>
+            </div>
+
+            <blockquote class="mt-8 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic">
+              💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> évitez de manger de la viande crue si vous avez le choix — la cuire au four ou sur un feu de camp restaure presque deux fois plus de faim.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACET 2: VILLAGEOIS -->
+      <div class="accordion-item bg-slate-900/60 border border-white/10 rounded-2xl overflow-hidden">
+        <button class="accordion-header w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left transition-colors">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-mcgreen-400 text-xs shrink-0">02</span>
+            <div>
+              <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2"><span class="w-6 h-6 rounded bg-slate-800/60 border border-white/10 inline-flex items-center justify-center overflow-hidden shrink-0"><img src="icon/items/villager_spawn_egg.png" alt="" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'"></span> Villageois &amp; Commerce</h3>
+              <p class="text-xs sm:text-sm text-slate-500">Métiers, postes de travail, échanges</p>
+            </div>
+          </div>
+          <svg class="accordion-chevron w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel-inner px-5 sm:px-6 pb-6">
+            <p class="text-slate-400">Les villages apparaissent naturellement et regroupent des villageois. Chaque villageois adopte un métier en fonction du poste de travail le plus proche, et propose des échanges différents selon ce métier.</p>
+
+            <div class="mt-6">
+              <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Métiers &amp; postes de travail</p>
+              <div class="grid sm:grid-cols-2 gap-2" id="villagerTable"></div>
+            </div>
+
+            <p class="mt-6 text-slate-400"><span class="text-white font-semibold">Comment échanger :</span> faites <span class="text-mcgreen-400 font-semibold">clic droit</span> sur un villageois pour ouvrir son interface de commerce. La monnaie est l'émeraude : on en obtient en minant du minerai d'émeraude ou en vendant des récoltes et objets aux villageois.</p>
+
+            <blockquote class="mt-6 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic">
+              💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> protégez vos villageois — une cloche les alerte pour se mettre à l'abri, et un golem de fer les défend contre les monstres.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACET 3: ARMURES -->
+      <div class="accordion-item bg-slate-900/60 border border-white/10 rounded-2xl overflow-hidden">
+        <button class="accordion-header w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left transition-colors">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-mcgreen-400 text-xs shrink-0">03</span>
+            <div>
+              <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2"><span class="w-6 h-6 rounded bg-slate-800/60 border border-white/10 inline-flex items-center justify-center overflow-hidden shrink-0"><img src="icon/items/iron_chestplate.png" alt="" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'"></span> Armures</h3>
+              <p class="text-xs sm:text-sm text-slate-500">Emplacements, matériaux, protection</p>
+            </div>
+          </div>
+          <svg class="accordion-chevron w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel-inner px-5 sm:px-6 pb-6">
+            <p class="text-slate-400">L'armure occupe 4 emplacements dans l'inventaire : casque, plastron, jambières et bottes. Chaque pièce réduit les dégâts reçus, et le total dépend du matériau utilisé.</p>
+
+            <div class="mt-6">
+              <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Les 4 matériaux d'armure</p>
+              <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3" id="armorStatsShowcase"></div>
+            </div>
+
+            <p class="mt-6 text-sm text-slate-400">Choisissez une pièce et un matériau pour voir sa recette exacte.
+              <a href="#crafting" class="text-mcgreen-400 font-semibold hover:underline">Essayer dans le simulateur ↓</a>
+            </p>
+
+            <blockquote class="mt-6 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic">
+              💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> combinez votre armure avec un bouclier (clic droit maintenu) pour bloquer aussi les attaques frontales.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACET 4: OUTILS -->
+      <div class="accordion-item bg-slate-900/60 border border-white/10 rounded-2xl overflow-hidden">
+        <button class="accordion-header w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left transition-colors">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-mcgreen-400 text-xs shrink-0">04</span>
+            <div>
+              <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2"><span class="w-6 h-6 rounded bg-slate-800/60 border border-white/10 inline-flex items-center justify-center overflow-hidden shrink-0"><img src="icon/items/stone_pickaxe.png" alt="" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'"></span> Outils &amp; leur utilité</h3>
+              <p class="text-xs sm:text-sm text-slate-500">À quoi sert chaque outil</p>
+            </div>
+          </div>
+          <svg class="accordion-chevron w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel-inner px-5 sm:px-6 pb-6">
+            <p class="text-slate-400">Chaque outil a un rôle précis : utiliser le bon rend la récolte plus rapide, et pour certains blocs c'est même indispensable pour obtenir quoi que ce soit.</p>
+
+            <div class="mt-6 grid sm:grid-cols-2 gap-3" id="toolUtilityGrid"></div>
+
+            <div class="mt-8">
+              <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Les 5 matériaux d'outils</p>
+              <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3" id="toolMaterialStats"></div>
+            </div>
+
+            <p class="mt-6 text-sm text-slate-400">Choisissez un outil et un matériau pour voir sa recette exacte.
+              <a href="#crafting" class="text-mcgreen-400 font-semibold hover:underline">Essayer dans le simulateur ↓</a>
+            </p>
+
+            <blockquote class="mt-6 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic">
+              💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> plus le matériau est rare, plus l'outil mine vite et dure longtemps — mais l'or fait exception : très rapide, il reste très fragile.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACET 5: COMBAT & MONSTRES -->
+      <div class="accordion-item bg-slate-900/60 border border-white/10 rounded-2xl overflow-hidden">
+        <button class="accordion-header w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left transition-colors">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-mcgreen-400 text-xs shrink-0">05</span>
+            <div>
+              <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2"><span class="w-6 h-6 rounded bg-slate-800/60 border border-white/10 inline-flex items-center justify-center overflow-hidden shrink-0"><img src="icon/items/zombie_spawn_egg.png" alt="" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'"></span> Combat &amp; Monstres</h3>
+              <p class="text-xs sm:text-sm text-slate-500">Les principaux monstres et comment y survivre</p>
+            </div>
+          </div>
+          <svg class="accordion-chevron w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel-inner px-5 sm:px-6 pb-6">
+            <p class="text-slate-400">Les monstres hostiles apparaissent dans l'obscurité — la nuit en surface, en permanence dans les grottes. Chacun a un comportement différent, mieux vaut le connaître avant de le croiser.</p>
+
+            <div class="mt-6 grid sm:grid-cols-2 gap-3" id="mobsGrid"></div>
+
+            <blockquote class="mt-8 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic">
+              💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> restez toujours dans des zones bien éclairées (torches) près de votre base — un niveau de lumière suffisant empêche les monstres d'apparaître.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACET 6: MINAGE & RESSOURCES -->
+      <div class="accordion-item bg-slate-900/60 border border-white/10 rounded-2xl overflow-hidden">
+        <button class="accordion-header w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left transition-colors">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-mcgreen-400 text-xs shrink-0">06</span>
+            <div>
+              <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2"><span class="w-6 h-6 rounded bg-slate-800/60 border border-white/10 inline-flex items-center justify-center overflow-hidden shrink-0"><img src="icon/items/diamond_ore.png" alt="" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'"></span> Minage &amp; Ressources</h3>
+              <p class="text-xs sm:text-sm text-slate-500">Où trouver chaque minerai et avec quoi</p>
+            </div>
+          </div>
+          <svg class="accordion-chevron w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel-inner px-5 sm:px-6 pb-6">
+            <p class="text-slate-400">Chaque minerai se trouve à des profondeurs différentes et nécessite un outil minimum pour être récolté correctement.</p>
+
+            <div class="mt-6 overflow-x-auto">
+              <table class="w-full text-sm border-separate border-spacing-y-2">
+                <tbody id="oresTable"></tbody>
+              </table>
+            </div>
+
+            <blockquote class="mt-8 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic">
+              💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> minez toujours en escalier, jamais tout droit vers le bas ou vers le haut — vous pourriez tomber dans un ravin ou dans de la lave.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACET 7: ENCHANTEMENTS & EXPERIENCE -->
+      <div class="accordion-item bg-slate-900/60 border border-white/10 rounded-2xl overflow-hidden">
+        <button class="accordion-header w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left transition-colors">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-mcgreen-400 text-xs shrink-0">07</span>
+            <div>
+              <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2"><span class="w-6 h-6 rounded bg-slate-800/60 border border-white/10 inline-flex items-center justify-center overflow-hidden shrink-0"><img src="icon/items/enchanting_table_top.png" alt="" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'"></span> Enchantements &amp; Expérience</h3>
+              <p class="text-xs sm:text-sm text-slate-500">Améliorer son équipement</p>
+            </div>
+          </div>
+          <svg class="accordion-chevron w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel-inner px-5 sm:px-6 pb-6">
+            <p class="text-slate-400">L'expérience (fioles vertes) s'obtient en minant certains minerais, en tuant des monstres, en faisant fondre des objets au four ou en pêchant. Elle sert à enchanter et réparer votre équipement.</p>
+
+            <div class="space-y-8 pt-6">
+              <div class="timeline-item timeline-line relative pl-14">
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-mcgreen-600 flex items-center justify-center font-bold text-white">1</div>
+                <h4 class="font-bold text-white">Table d'enchantement</h4>
+                <p class="mt-1 text-slate-400">Entourez-la d'étagères (jusqu'à 15) pour débloquer les enchantements les plus puissants. Chaque enchantement coûte des niveaux d'XP et 1 lapis-lazuli.</p>
+              </div>
+              <div class="timeline-item relative pl-14">
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-mcgreen-600 flex items-center justify-center font-bold text-white">2</div>
+                <h4 class="font-bold text-white">Enclume</h4>
+                <p class="mt-1 text-slate-400">Combine deux objets pour réparer, renommer ou fusionner leurs enchantements, en consommant de l'XP à chaque utilisation.</p>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Enchantements courants</p>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="enchantGrid"></div>
+            </div>
+
+            <blockquote class="mt-8 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic">
+              💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> un enchantement qui coûte cher (niveau 30) n'est pas toujours le plus utile — Solidité, souvent proposée à bas niveau, est très rentable dès le début.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CRAFTING SIMULATOR -->
+<section id="crafting" class="scroll-mt-16 py-24 px-5 bg-slate-900/40 border-t border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="font-pixel text-[10px] text-mcgreen-400">03 · PRATIQUE</span>
+      <h2 class="mt-4 text-3xl sm:text-4xl font-black text-white">Simulateur de fabrication</h2>
+      <p class="mt-3 text-slate-400 max-w-2xl mx-auto">Choisissez un outil, une armure, un bloc dérivé du bois ou de la pierre pour voir exactement comment disposer les ingrédients.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-[300px_1fr] gap-8">
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <div class="bg-slate-900/60 border border-white/10 rounded-2xl p-4 sm:p-5">
+          <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">🛠️ Outils</p>
+          <div class="flex flex-wrap gap-2" id="toolPills"></div>
+          <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2 mt-5">Matériau</p>
+          <div class="flex flex-wrap gap-2" id="materialPills"></div>
+        </div>
+
+        <div class="bg-slate-900/60 border border-white/10 rounded-2xl p-4 sm:p-5">
+          <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">🛡️ Armures</p>
+          <div class="flex flex-wrap gap-2" id="armorPiecePills"></div>
+          <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2 mt-5">Matériau</p>
+          <div class="flex flex-wrap gap-2" id="armorMaterialPills"></div>
+        </div>
+
+        <div class="bg-slate-900/60 border border-white/10 rounded-2xl p-4 sm:p-5">
+          <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">🪵 Bois dérivé</p>
+          <div class="flex flex-col gap-2" id="woodBlockList"></div>
+        </div>
+
+        <div class="bg-slate-900/60 border border-white/10 rounded-2xl p-4 sm:p-5">
+          <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">🧱 Pierre &amp; dérivés</p>
+          <div class="flex flex-col gap-2" id="stoneBlockList"></div>
+        </div>
+
+        <div class="bg-slate-900/60 border border-white/10 rounded-2xl p-4 sm:p-5">
+          <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">📦 Utilitaires</p>
+          <div class="flex flex-col gap-2" id="blockRecipeList"></div>
+        </div>
+      </div>
+
+      <!-- Crafting panel -->
+      <div class="bg-stonemc-700/60 border-4 border-stonemc-600 rounded-2xl p-6 sm:p-10 pixel-corners">
+        <div id="woodPillsRow" class="hidden mb-6 flex flex-wrap justify-center gap-2" id="woodPills"></div>
+
+        <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+          <!-- 3x3 grid -->
+          <div class="grid grid-cols-3 gap-2 bg-stonemc-600/60 p-3 rounded-xl border-2 border-stonemc-500" id="craftGrid"></div>
+
+          <div class="text-3xl text-slate-400">→</div>
+
+          <!-- output -->
+          <div class="flex flex-col items-center gap-2">
+            <div id="outputSlot" class="w-20 h-20 rounded-xl bg-stonemc-600/60 border-2 border-mcgreen-500 flex items-center justify-center text-3xl"></div>
+            <p id="outputLabel" class="text-sm font-bold text-white text-center"></p>
+          </div>
+        </div>
+
+        <!-- legend -->
+        <div id="ingredientLegend" class="flex flex-wrap justify-center gap-4 mt-8 text-xs text-slate-300"></div>
+      </div>
+    </div>
+
+    <!-- explanation -->
+    <div class="mt-8 bg-slate-900/60 border border-white/5 rounded-2xl p-6 sm:p-8">
+      <h3 id="explanationTitle" class="text-xl font-bold text-white mb-2"></h3>
+      <p id="explanationText" class="text-slate-400 leading-relaxed"></p>
+      <div id="toolStats" class="hidden mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs"></div>
+    </div>
+
+    <blockquote class="mt-10 border-l-4 border-mcgreen-500 bg-slate-900/50 rounded-r-xl px-6 py-4 text-slate-300 italic max-w-3xl mx-auto">
+      💡 <span class="font-semibold not-italic text-mcgreen-400">Pro-tip :</span> la position des ingrédients dans la grille compte presque toujours — seule la forme importe, pas la position exacte (vous pouvez décaler le motif tant qu'il garde sa forme).
+    </blockquote>
+  </div>
+</section>
+
+<footer class="py-10 px-5 border-t border-white/5 bg-slate-950 text-center">
+  <p class="text-slate-500 text-sm">Fait avec ⛏️ et 🧡 pour tous les aventuriers débutants. Non affilié à Mojang / Microsoft.</p>
+  <a href="#hero" class="inline-block mt-3 text-xs text-mcgreen-400 hover:text-mcgreen-300 font-semibold">↑ Retour en haut</a>
+</footer>
+
+<script>
+  // ---------- Mobile menu ----------
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+  // ---------- Controls dashboard highlighting ----------
+  function keyElsFor(key) { return document.querySelectorAll(`[data-key="${key}"]`); }
+  function setKeyActive(key, active) { keyElsFor(key).forEach(el => el.classList.toggle('key-active', active)); }
+  document.querySelectorAll('.action-btn').forEach(btn => {
+    const keys = btn.dataset.keys.split(',');
+    const on = () => keys.forEach(k => setKeyActive(k, true));
+    const off = () => keys.forEach(k => setKeyActive(k, false));
+    btn.addEventListener('mouseenter', on);
+    btn.addEventListener('mouseleave', off);
+    btn.addEventListener('focus', on);
+    btn.addEventListener('blur', off);
+    btn.addEventListener('click', () => { on(); btn.classList.add('action-active'); setTimeout(() => { off(); btn.classList.remove('action-active'); }, 700); });
+    btn.className += ' action-btn text-left px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-slate-300 font-medium transition-colors';
+  });
+
+  window.addEventListener('keydown', e => {
+    const k = e.key.toUpperCase();
+    if (e.code === 'Space') { setKeyActive('SPACE', true); return; }
+    if (['Z','Q','S','D','E'].includes(k)) setKeyActive(k, true);
+  });
+  window.addEventListener('keyup', e => {
+    const k = e.key.toUpperCase();
+    if (e.code === 'Space') { setKeyActive('SPACE', false); return; }
+    if (['Z','Q','S','D','E'].includes(k)) setKeyActive(k, false);
+  });
+
+  // ---------- Accordion guide ----------
+  document.querySelectorAll('.accordion-item').forEach(item => {
+    const header = item.querySelector('.accordion-header');
+    header.addEventListener('click', () => {
+      const willOpen = !item.classList.contains('open');
+      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+      if (willOpen) item.classList.add('open');
+    });
+  });
+
+  // ================= ICON HELPER =================
+  // Renders an <img> pointing to the real Minecraft textures dropped in icon/items/.
+  // If a given file is missing, onerror hides it, leaving the surrounding slot
+  // (grid cell, pill, output box...) as a clean empty placeholder.
+  const ICON_BASE = 'icon/items/';
+  function iconImg(file, alt, cls) {
+    return `<img src="${ICON_BASE}${file}" alt="${alt || ''}" title="${alt || ''}" loading="lazy" class="${cls || ''} object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'">`;
+  }
+  function woodBoxHTML(wood, kind, sizeCls) {
+    const file = kind === 'plank' ? wood.plankImg : wood.logImg;
+    const label = kind === 'plank' ? `Planches de ${wood.label}` : `Bois de ${wood.label}`;
+    return `<span class="${sizeCls} rounded inline-flex items-center justify-center overflow-hidden shrink-0" style="background:${wood.color};border:2px solid rgba(0,0,0,0.35)">
+      <img src="${ICON_BASE}${file}" alt="${label}" title="${label}" loading="lazy" class="w-full h-full object-contain" style="image-rendering:pixelated" onerror="this.style.display='none'">
+    </span>`;
+  }
+
+  // ================= DATA MODEL =================
+  const WOODS = [
+    { key: 'chene',     label: 'Chêne',      color: '#c8a165', mcid: 'oak',      logImg: 'oak_log.png',      plankImg: 'oak_planks.png' },
+    { key: 'epicea',    label: 'Épicéa',     color: '#6b4a35', mcid: 'spruce',   logImg: 'spruce_log.png',   plankImg: 'spruce_planks.png' },
+    { key: 'bouleau',   label: 'Bouleau',    color: '#e6dcae', mcid: 'birch',    logImg: 'birch_log.png',    plankImg: 'birch_planks.png' },
+    { key: 'acacia',    label: 'Acacia',     color: '#b5652f', mcid: 'acacia',   logImg: 'acacia_log.png',   plankImg: 'acacia_planks.png' },
+    { key: 'acajou',    label: 'Acajou',     color: '#9c7748', mcid: 'jungle',   logImg: 'jungle_log.png',   plankImg: 'jungle_planks.png' },
+    { key: 'chenenoir', label: 'Chêne noir', color: '#3d2f24', mcid: 'dark_oak', logImg: 'dark_oak_log.png', plankImg: 'dark_oak_planks.png' },
+  ];
+
+  const ICONS = {
+    plank:         { img: 'oak_planks.png',   label: 'Planche' },
+    stick:         { img: 'stick.png',        label: 'Bâton' },
+    pierre:        { img: 'cobblestone.png',  label: 'Pierre' },
+    charbon:       { img: 'coal.png',         label: 'Charbon' },
+    fer:           { img: 'iron_ingot.png',   label: 'Lingot de fer' },
+    or:            { img: 'gold_ingot.png',   label: "Lingot d'or" },
+    diamant:       { img: 'diamond.png',      label: 'Diamant' },
+    cuir:          { img: 'leather.png',      label: 'Cuir' },
+    book:          { img: 'book.png',         label: 'Livre' },
+    roche:         { img: 'stone.png',        label: 'Pierre (fondue au four)' },
+    pierre_lisse:  { img: 'smooth_stone.png', label: 'Pierre lisse' },
+    pierre_taillee:{ img: 'stone_bricks.png', label: 'Pierre taillée' },
+  };
+
+  const MATERIAL_WORDS = {
+    plank:   { plural: 'planches',         singular: 'Une planche' },
+    pierre:  { plural: 'blocs de pierre',  singular: 'Un bloc de pierre' },
+    fer:     { plural: 'lingots de fer',   singular: 'Un lingot de fer' },
+    or:      { plural: "lingots d'or",     singular: "Un lingot d'or" },
+    diamant: { plural: 'diamants',         singular: 'Un diamant' },
+  };
+
+  const MATERIALS = {
+    bois:    { label: 'Bois',    ingredient: 'plank',   miningSpeed: 'Lente',       durability: 'Faible (59)',       damage: 'Faibles',      requirement: 'Aucun (bois brut)' },
+    pierre:  { label: 'Pierre',  ingredient: 'pierre',  miningSpeed: 'Moyenne',     durability: 'Correcte (131)',    damage: 'Moyens',       requirement: 'Pioche en bois' },
+    fer:     { label: 'Fer',     ingredient: 'fer',     miningSpeed: 'Rapide',      durability: 'Bonne (250)',       damage: 'Élevés',       requirement: 'Pioche en pierre' },
+    or:      { label: 'Or',      ingredient: 'or',      miningSpeed: 'Très rapide', durability: 'Très faible (32)',  damage: 'Faibles',      requirement: 'Pioche en fer' },
+    diamant: { label: 'Diamant', ingredient: 'diamant', miningSpeed: 'Très rapide', durability: 'Excellente (1561)', damage: 'Très élevés',  requirement: 'Pioche en fer' },
+  };
+
+  const TOOLS = {
+    pioche: { label: 'Pioche', shape: ['MAT','MAT','MAT', null,'stick',null, null,'stick',null] },
+    epee:   { label: 'Épée',   shape: [null,'MAT',null, null,'MAT',null, null,'stick',null] },
+    hache:  { label: 'Hache',  shape: ['MAT','MAT',null, 'MAT','stick',null, null,'stick',null] },
+    pelle:  { label: 'Pelle',  shape: [null,'MAT',null, null,'stick',null, null,'stick',null] },
+    houe:   { label: 'Houe',   shape: ['MAT','MAT',null, null,'stick',null, null,'stick',null] },
+  };
+  // Maps our French tool/material keys to vanilla Minecraft texture filenames,
+  // e.g. pioche + diamant -> diamond_pickaxe.png
+  const TOOL_TEXTURE_SUFFIX = { pioche: 'pickaxe', epee: 'sword', hache: 'axe', pelle: 'shovel', houe: 'hoe' };
+  const MATERIAL_TEXTURE_PREFIX = { bois: 'wooden', pierre: 'stone', fer: 'iron', or: 'golden', diamant: 'diamond' };
+  function toolIconFile(toolKey, materialKey) {
+    return `${MATERIAL_TEXTURE_PREFIX[materialKey || 'bois']}_${TOOL_TEXTURE_SUFFIX[toolKey]}.png`;
+  }
+
+  const ARMOR_PIECES = {
+    casque:     { label: 'Casque',     shape: ['MAT','MAT','MAT', 'MAT',null,'MAT', null,null,null] },
+    plastron:   { label: 'Plastron',   shape: ['MAT',null,'MAT', 'MAT','MAT','MAT', 'MAT','MAT','MAT'] },
+    jambieres:  { label: 'Jambières',  shape: ['MAT','MAT','MAT', 'MAT',null,'MAT', 'MAT',null,'MAT'] },
+    bottes:     { label: 'Bottes',     shape: [null,null,null, 'MAT',null,'MAT', 'MAT',null,'MAT'] },
+  };
+  const ARMOR_MATERIALS = {
+    cuir:    { label: 'Cuir',    ingredient: 'cuir',    protection: '7 pts (set complet)',  durability: 'Faible',    special: 'Peut être teint de couleur', requirement: 'Chasser vaches/vaches sauvages' },
+    fer:     { label: 'Fer',     ingredient: 'fer',     protection: '15 pts (set complet)', durability: 'Bonne',     special: '—', requirement: 'Fondre du minerai de fer' },
+    or:      { label: 'Or',     ingredient: 'or',      protection: '11 pts (set complet)', durability: 'Très faible', special: '—', requirement: "Fondre du minerai d'or" },
+    diamant: { label: 'Diamant', ingredient: 'diamant', protection: '20 pts (set complet)', durability: 'Excellente', special: '—', requirement: 'Miner avec une pioche en fer' },
+  };
+  const ARMOR_TEXTURE_SUFFIX = { casque: 'helmet', plastron: 'chestplate', jambieres: 'leggings', bottes: 'boots' };
+  const ARMOR_MATERIAL_PREFIX = { cuir: 'leather', fer: 'iron', or: 'golden', diamant: 'diamond' };
+  function armorIconFile(pieceKey, materialKey) {
+    return `${ARMOR_MATERIAL_PREFIX[materialKey || 'cuir']}_${ARMOR_TEXTURE_SUFFIX[pieceKey]}.png`;
+  }
+
+  const TOOL_EXPLANATIONS = {
+    pioche: w => `3 ${w.plural} occupent toute la rangée du haut (la tête de l'outil), puis 2 bâtons sont alignés au centre en dessous (le manche). Cette forme en T définit toutes les pioches, quel que soit le matériau.`,
+    epee:   w => `2 ${w.plural} sont empilés verticalement puis 1 bâton en dessous, dans une seule colonne. Cette ligne verticale de 3 cases est la signature de toutes les épées.`,
+    hache:  w => `3 ${w.plural} forment un L (2 en haut, 1 au milieu à gauche), avec les bâtons alignés à droite en dessous. Le même motif fonctionne aussi en miroir.`,
+    pelle:  w => `${w.singular} posé au sommet d'une colonne de 2 bâtons. C'est la recette la plus simple de tous les outils.`,
+    houe:   w => `2 ${w.plural} côte à côte sur la rangée du haut, avec les bâtons alignés au centre en dessous. Idéale pour labourer la terre et planter des cultures.`,
+  };
+
+  // WOOD_ITEM_OUTPUT: blocks whose icon is a real per-essence texture (not a plank reuse)
+  const WOOD_ITEM_OUTPUT = { porte: 'door', trappe: 'trapdoor', panneau: 'sign', bateau: 'boat' };
+
+  const BLOCK_RECIPES = {
+    // ---- Bois dérivé ----
+    planches: { name: 'Planches', category: 'bois', img: 'oak_planks.png' }, // special-cased, needs wood selection
+    stick: {
+      name: 'Bâtons', category: 'bois', fixedOutput: true, img: 'stick.png',
+      grid: [null, 'woodplank', null, null, 'woodplank', null, null, null, null],
+      output: { img: 'stick.png', label: '4x Bâtons' },
+      explanation: "Placez 2 planches l'une au-dessus de l'autre, dans n'importe quelle colonne de la grille. Seul l'alignement vertical compte, et l'apparence du bâton ne change jamais selon l'essence utilisée."
+    },
+    table: {
+      name: 'Table de craft', category: 'bois', fixedOutput: true, img: 'crafting_table_top.png',
+      grid: ['woodplank', 'woodplank', null, 'woodplank', 'woodplank', null, null, null, null],
+      output: { img: 'crafting_table_top.png', label: 'Table de craft' },
+      explanation: "4 planches disposées en carré 2x2, n'importe où dans la grille. Quel que soit le bois utilisé, la table de craft garde toujours la même apparence."
+    },
+    escalier: {
+      name: 'Escalier', category: 'bois', img: 'oak_planks.png',
+      grid: ['woodplank', null, null, 'woodplank', 'woodplank', null, 'woodplank', 'woodplank', 'woodplank'],
+      explanation: "6 planches en forme d'escalier : une colonne pleine à gauche, en dégradé vers la droite. Comme les dalles et clôtures, l'escalier réutilise directement la texture des planches — seule sa forme change une fois posé."
+    },
+    dalle: {
+      name: 'Dalle', category: 'bois', img: 'oak_planks.png',
+      grid: [null, null, null, null, null, null, 'woodplank', 'woodplank', 'woodplank'],
+      explanation: "3 planches alignées sur la rangée du bas. La dalle occupe la moitié de la hauteur d'un bloc, pratique pour les toits et la décoration."
+    },
+    cloture: {
+      name: 'Clôture', category: 'bois', img: 'oak_planks.png',
+      grid: ['woodplank', 'stick', 'woodplank', 'woodplank', 'stick', 'woodplank', null, null, null],
+      explanation: "Planches et bâtons en alternance sur deux rangées. La clôture bloque les mobs sans gêner la vue, avec une hauteur d'1,5 bloc."
+    },
+    portillon: {
+      name: 'Portillon', category: 'bois', img: 'oak_planks.png',
+      grid: ['stick', 'woodplank', 'stick', 'stick', 'woodplank', 'stick', null, null, null],
+      explanation: "Motif inversé de la clôture : bâtons sur les côtés, planche au centre, sur deux rangées. S'ouvre et se referme comme une porte au milieu d'une clôture."
+    },
+    plaque_pression: {
+      name: 'Plaque de pression', category: 'bois', img: 'oak_planks.png',
+      grid: ['woodplank', 'woodplank', null, null, null, null, null, null, null],
+      explanation: "2 planches côte à côte. Elle s'active au passage d'un joueur, d'une entité ou même d'une flèche, pratique pour déclencher un mécanisme."
+    },
+    bouton: {
+      name: 'Bouton', category: 'bois', img: 'oak_planks.png',
+      grid: [null, null, null, null, 'woodplank', null, null, null, null],
+      explanation: "1 seule planche, placée n'importe où dans la grille (recette sans forme). Contrairement au bouton en pierre, le bouton en bois peut aussi être activé par une flèche."
+    },
+    porte: {
+      name: 'Porte', category: 'bois', img: 'oak_door.png',
+      grid: ['woodplank', 'woodplank', null, 'woodplank', 'woodplank', null, 'woodplank', 'woodplank', null],
+      explanation: "6 planches réparties sur deux colonnes et trois rangées. La porte en bois se referme automatiquement et bloque les zombies, contrairement à la porte en fer qui nécessite un levier."
+    },
+    trappe: {
+      name: 'Trappe', category: 'bois', img: 'oak_trapdoor.png',
+      grid: ['woodplank', 'woodplank', 'woodplank', 'woodplank', 'woodplank', 'woodplank', null, null, null],
+      explanation: "6 planches sur deux rangées complètes. Elle se pose au sol ou sur un mur, pratique comme piège discret ou passage secret."
+    },
+    panneau: {
+      name: 'Panneau', category: 'bois', img: 'oak_sign.png',
+      grid: ['woodplank', 'woodplank', 'woodplank', 'woodplank', 'woodplank', 'woodplank', null, 'stick', null],
+      explanation: "6 planches sur deux rangées, avec un bâton en dessous au centre pour le support. Le panneau affiche un texte personnalisé une fois posé."
+    },
+    bateau: {
+      name: 'Bateau', category: 'bois', img: 'oak_boat.png',
+      grid: ['woodplank', null, 'woodplank', 'woodplank', 'woodplank', 'woodplank', null, null, null],
+      explanation: "5 planches en forme de coque : 2 aux extrémités de la rangée du haut, 3 sur toute la rangée du milieu. Permet de se déplacer sur l'eau."
+    },
+    bibliotheque: {
+      name: 'Bibliothèque', category: 'bois', fixedOutput: true, img: 'bookshelf.png',
+      grid: ['woodplank', 'woodplank', 'woodplank', 'book', 'book', 'book', 'woodplank', 'woodplank', 'woodplank'],
+      output: { img: 'bookshelf.png', label: '1x Bibliothèque' },
+      explanation: "6 planches encadrent 3 livres. Son apparence ne change jamais, quelle que soit l'essence utilisée. Placée près d'une table d'enchantement, elle débloque des enchantements plus puissants."
+    },
+    composteur: {
+      name: 'Composteur', category: 'bois', fixedOutput: true, img: 'composter_top.png',
+      grid: ['woodplank', null, 'woodplank', 'woodplank', null, 'woodplank', 'woodplank', 'woodplank', 'woodplank'],
+      output: { img: 'composter_top.png', label: '1x Composteur' },
+      explanation: "7 dalles en bois disposées en U. Toujours de la même apparence quel que soit le bois utilisé. Il transforme les déchets végétaux en engrais pour l'agriculture."
+    },
+
+    // ---- Pierre & dérivés ----
+    furnace: {
+      name: 'Four', category: 'pierre', img: 'furnace_front.png',
+      grid: ['pierre', 'pierre', 'pierre', 'pierre', null, 'pierre', 'pierre', 'pierre', 'pierre'],
+      output: { img: 'furnace_front.png', label: 'Four' },
+      title: 'Four',
+      explanation: "8 blocs de pierre forment un anneau complet autour d'une case centrale vide. Ce centre libre est essentiel : c'est symboliquement la chambre de combustion du four."
+    },
+    escalier_pierre: {
+      name: 'Escalier en pierre', category: 'pierre', img: 'cobblestone.png',
+      grid: ['pierre', null, null, 'pierre', 'pierre', null, 'pierre', 'pierre', 'pierre'],
+      output: { img: 'cobblestone.png', label: '4x Escalier en pierre' },
+      title: 'Escalier en pierre',
+      explanation: "Même forme que l'escalier en bois, mais avec 6 blocs de pierre (cobblestone). Il réutilise la texture de son matériau de base, comme tous les blocs de cette famille."
+    },
+    dalle_pierre: {
+      name: 'Dalle en pierre', category: 'pierre', img: 'cobblestone.png',
+      grid: [null, null, null, null, null, null, 'pierre', 'pierre', 'pierre'],
+      output: { img: 'cobblestone.png', label: '6x Dalle en pierre' },
+      title: 'Dalle en pierre',
+      explanation: "3 blocs de pierre alignés sur la rangée du bas, exactement comme pour les autres dalles du jeu."
+    },
+    mur_pierre: {
+      name: 'Mur en pierre', category: 'pierre', img: 'cobblestone.png',
+      grid: ['pierre', 'pierre', 'pierre', 'pierre', 'pierre', 'pierre', null, null, null],
+      output: { img: 'cobblestone.png', label: '6x Mur en pierre' },
+      title: 'Mur en pierre',
+      explanation: "6 blocs de pierre sur deux rangées complètes. Plus haut qu'une clôture, le mur bloque aussi les flèches et se connecte visuellement à ses voisins."
+    },
+    pierre_taillee: {
+      name: 'Pierre taillée', category: 'pierre', img: 'stone_bricks.png',
+      grid: ['roche', 'roche', null, 'roche', 'roche', null, null, null, null],
+      output: { img: 'stone_bricks.png', label: '4x Pierre taillée' },
+      title: 'Pierre taillée',
+      explanation: "4 blocs de pierre fondue au four (pas le cobblestone brut !) en carré 2x2. C'est cette pierre taillée qui sert ensuite à fabriquer escaliers, dalles et murs assortis."
+    },
+    escalier_pierre_taillee: {
+      name: 'Escalier en pierre taillée', category: 'pierre', img: 'stone_bricks.png',
+      grid: ['pierre_taillee', null, null, 'pierre_taillee', 'pierre_taillee', null, 'pierre_taillee', 'pierre_taillee', 'pierre_taillee'],
+      output: { img: 'stone_bricks.png', label: '4x Escalier en pierre taillée' },
+      title: 'Escalier en pierre taillée',
+      explanation: "Même forme que les autres escaliers, avec 6 blocs de pierre taillée cette fois."
+    },
+    dalle_pierre_taillee: {
+      name: 'Dalle en pierre taillée', category: 'pierre', img: 'stone_bricks.png',
+      grid: [null, null, null, null, null, null, 'pierre_taillee', 'pierre_taillee', 'pierre_taillee'],
+      output: { img: 'stone_bricks.png', label: '6x Dalle en pierre taillée' },
+      title: 'Dalle en pierre taillée',
+      explanation: "3 blocs de pierre taillée alignés sur la rangée du bas."
+    },
+    mur_pierre_taillee: {
+      name: 'Mur en pierre taillée', category: 'pierre', img: 'stone_bricks.png',
+      grid: ['pierre_taillee', 'pierre_taillee', 'pierre_taillee', 'pierre_taillee', 'pierre_taillee', 'pierre_taillee', null, null, null],
+      output: { img: 'stone_bricks.png', label: '6x Mur en pierre taillée' },
+      title: 'Mur en pierre taillée',
+      explanation: "6 blocs de pierre taillée sur deux rangées, pour un mur assorti à vos constructions en pierre taillée."
+    },
+    dalle_pierre_lisse: {
+      name: 'Dalle de pierre lisse', category: 'pierre', img: 'smooth_stone.png',
+      grid: [null, null, null, null, null, null, 'pierre_lisse', 'pierre_lisse', 'pierre_lisse'],
+      output: { img: 'smooth_stone.png', label: '6x Dalle de pierre lisse' },
+      title: 'Dalle de pierre lisse',
+      explanation: "3 blocs de pierre lisse alignés en bas. La pierre lisse elle-même ne se fabrique pas sur table de craft : il faut fondre de la pierre déjà fondue une seconde fois au four."
+    },
+
+    // ---- Utilitaires ----
+    torch: {
+      name: 'Torche', category: 'util', img: 'torch.png',
+      grid: [null, 'charbon', null, null, 'stick', null, null, null, null],
+      output: { img: 'torch.png', label: '4x Torches' },
+      title: 'Torche',
+      explanation: "1 charbon (ou charbon de bois) posé directement au-dessus d'un bâton. L'ordre vertical est essentiel : le charbon doit être en haut et le bâton en dessous, sinon la recette échoue."
+    },
+    shield: {
+      name: 'Bouclier', category: 'util', img: 'shield.png',
+      grid: ['plank', 'fer', 'plank', 'plank', 'plank', 'plank', null, 'plank', null],
+      output: { img: 'shield.png', label: 'Bouclier' },
+      title: 'Bouclier',
+      explanation: "Un lingot de fer au centre de la rangée du haut (le blason) est entouré de 6 planches qui forment l'armature en bois. Une fois fabriqué, maintenez le clic droit pour le lever et bloquer les attaques frontales."
+    },
+  };
+
+  // ================= STATE =================
+  const state = { mode: 'tool', tool: 'pioche', material: 'bois', blockKey: 'stick', wood: 'chene', armorPiece: 'casque', armorMaterial: 'cuir' };
+
+  // ================= DOM refs =================
+  const gridEl = document.getElementById('craftGrid');
+  const outputSlotEl = document.getElementById('outputSlot');
+  const outputLabelEl = document.getElementById('outputLabel');
+  const legendEl = document.getElementById('ingredientLegend');
+  const explanationTitleEl = document.getElementById('explanationTitle');
+  const explanationTextEl = document.getElementById('explanationText');
+  const toolStatsEl = document.getElementById('toolStats');
+  const woodPillsRow = document.getElementById('woodPillsRow');
+
+  // build 9 grid cells once
+  const cellEls = [];
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'craft-cell w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-stonemc-500/40 border-2 border-stonemc-400/60 flex items-center justify-center text-2xl sm:text-3xl transition-colors';
+    gridEl.appendChild(cell);
+    cellEls.push(cell);
+  }
+
+  function paintGrid(grid, wood) {
+    cellEls.forEach((cell, i) => {
+      const ing = grid[i];
+      cell.classList.remove('filled');
+      if (!ing) { cell.innerHTML = ''; cell.title = ''; return; }
+      if (ing === 'wood') {
+        cell.innerHTML = woodBoxHTML(wood, 'log', 'w-10 h-10 sm:w-12 sm:h-12');
+        cell.title = `Bois de ${wood.label}`;
+      } else if (ing === 'woodplank') {
+        cell.innerHTML = woodBoxHTML(wood, 'plank', 'w-9 h-9 sm:w-11 sm:h-11');
+        cell.title = `Planche de ${wood.label}`;
+      } else {
+        cell.innerHTML = iconImg(ICONS[ing].img, ICONS[ing].label, 'w-9 h-9 sm:w-11 sm:h-11');
+        cell.title = ICONS[ing].label;
+      }
+      void cell.offsetWidth;
+      cell.classList.add('filled');
+    });
+  }
+
+  function legendFromGrid(grid, wood) {
+    const used = [...new Set(grid.filter(Boolean))];
+    return used.map(ing => {
+      if (ing === 'wood') {
+        return `<span class="flex items-center gap-1.5 bg-slate-800/60 px-3 py-1.5 rounded-full">${woodBoxHTML(wood, 'log', 'w-5 h-5')} Bois de ${wood.label}</span>`;
+      }
+      if (ing === 'woodplank') {
+        return `<span class="flex items-center gap-1.5 bg-slate-800/60 px-3 py-1.5 rounded-full">${woodBoxHTML(wood, 'plank', 'w-5 h-5')} Planche de ${wood.label}</span>`;
+      }
+      return `<span class="flex items-center gap-1.5 bg-slate-800/60 px-3 py-1.5 rounded-full">${iconImg(ICONS[ing].img, ICONS[ing].label, 'w-5 h-5')} ${ICONS[ing].label}</span>`;
+    }).join('');
+  }
+
+  // ================= RENDER =================
+  function renderCurrent() {
+    if (state.mode === 'tool') renderToolRecipe();
+    else if (state.mode === 'armor') renderArmorRecipe();
+    else renderBlockRecipe();
+    highlightSelectors();
+  }
+
+  function renderToolRecipe() {
+    woodPillsRow.classList.add('hidden');
+    const tool = TOOLS[state.tool];
+    const mat = MATERIALS[state.material];
+    const grid = tool.shape.map(c => c === 'MAT' ? mat.ingredient : c);
+    paintGrid(grid);
+    outputSlotEl.innerHTML = iconImg(toolIconFile(state.tool, state.material), `${tool.label} en ${mat.label}`, 'w-14 h-14');
+    outputLabelEl.textContent = `${tool.label} en ${mat.label}`;
+    explanationTitleEl.textContent = `${tool.label} en ${mat.label}`;
+    explanationTextEl.textContent = TOOL_EXPLANATIONS[state.tool](MATERIAL_WORDS[mat.ingredient]);
+    legendEl.innerHTML = legendFromGrid(grid);
+
+    toolStatsEl.classList.remove('hidden');
+    toolStatsEl.innerHTML = `
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Vitesse de minage</p><p class="text-white font-semibold">${mat.miningSpeed}</p></div>
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Durabilité</p><p class="text-white font-semibold">${mat.durability}</p></div>
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Dégâts</p><p class="text-white font-semibold">${mat.damage}</p></div>
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Pour l'obtenir</p><p class="text-white font-semibold">${mat.requirement}</p></div>
+    `;
+  }
+
+  function renderArmorRecipe() {
+    woodPillsRow.classList.add('hidden');
+    const piece = ARMOR_PIECES[state.armorPiece];
+    const mat = ARMOR_MATERIALS[state.armorMaterial];
+    const grid = piece.shape.map(c => c === 'MAT' ? mat.ingredient : c);
+    paintGrid(grid);
+    const file = armorIconFile(state.armorPiece, state.armorMaterial);
+    outputSlotEl.innerHTML = iconImg(file, `${piece.label} en ${mat.label}`, 'w-14 h-14');
+    outputLabelEl.textContent = `${piece.label} en ${mat.label}`;
+    explanationTitleEl.textContent = `${piece.label} en ${mat.label}`;
+    const count = grid.filter(c => c === mat.ingredient).length;
+    explanationTextEl.textContent = `${count} ${MATERIAL_WORDS[mat.ingredient] ? MATERIAL_WORDS[mat.ingredient].plural : mat.label.toLowerCase()} disposés dans la forme du ${piece.label.toLowerCase()}, à fabriquer sur la table de craft.`;
+    legendEl.innerHTML = legendFromGrid(grid);
+
+    toolStatsEl.classList.remove('hidden');
+    toolStatsEl.innerHTML = `
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Protection</p><p class="text-white font-semibold">${mat.protection}</p></div>
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Durabilité</p><p class="text-white font-semibold">${mat.durability}</p></div>
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Spécial</p><p class="text-white font-semibold">${mat.special}</p></div>
+      <div class="bg-slate-800/60 rounded-lg px-3 py-2"><p class="text-slate-500">Pour l'obtenir</p><p class="text-white font-semibold">${mat.requirement}</p></div>
+    `;
+  }
+
+  function renderBlockRecipe() {
+    const key = state.blockKey;
+    const r = BLOCK_RECIPES[key];
+
+    if (key === 'planches') {
+      const wood = WOODS.find(w => w.key === state.wood) || WOODS[0];
+      const grid = [null, null, null, null, 'wood', null, null, null, null];
+      paintGrid(grid, wood);
+      outputSlotEl.innerHTML = woodBoxHTML(wood, 'plank', 'w-14 h-14');
+      outputLabelEl.textContent = `4x Planches de ${wood.label}`;
+      explanationTitleEl.textContent = `Planches de ${wood.label}`;
+      explanationTextEl.textContent = "Placez 1 bloc de bois n'importe où dans la grille pour obtenir 4 planches assorties. La recette est identique quelle que soit l'essence utilisée : seule la couleur des planches change.";
+      legendEl.innerHTML = legendFromGrid(grid, wood);
+      woodPillsRow.classList.remove('hidden');
+    } else if (r.category === 'bois') {
+      const wood = WOODS.find(w => w.key === state.wood) || WOODS[0];
+      paintGrid(r.grid, wood);
+      let outHtml, outLabel;
+      if (WOOD_ITEM_OUTPUT[key]) {
+        outLabel = `${r.name} de ${wood.label}`;
+        outHtml = iconImg(`${wood.mcid}_${WOOD_ITEM_OUTPUT[key]}.png`, outLabel, 'w-14 h-14');
+      } else if (r.fixedOutput) {
+        outLabel = r.output.label;
+        outHtml = iconImg(r.output.img, outLabel, 'w-14 h-14');
+      } else {
+        outLabel = `${r.name} de ${wood.label}`;
+        outHtml = woodBoxHTML(wood, 'plank', 'w-14 h-14');
+      }
+      outputSlotEl.innerHTML = outHtml;
+      outputLabelEl.textContent = outLabel;
+      explanationTitleEl.textContent = outLabel;
+      explanationTextEl.textContent = r.explanation;
+      legendEl.innerHTML = legendFromGrid(r.grid, wood);
+      woodPillsRow.classList.remove('hidden');
+    } else {
+      paintGrid(r.grid);
+      outputSlotEl.innerHTML = iconImg(r.output.img, r.output.label, 'w-14 h-14');
+      outputLabelEl.textContent = r.output.label;
+      explanationTitleEl.textContent = r.title || r.name;
+      explanationTextEl.textContent = r.explanation;
+      legendEl.innerHTML = legendFromGrid(r.grid);
+      woodPillsRow.classList.add('hidden');
+    }
+    toolStatsEl.classList.add('hidden');
+  }
+
+  function highlightSelectors() {
+    document.querySelectorAll('.tool-pill').forEach(b => b.classList.toggle('active', state.mode === 'tool' && b.dataset.tool === state.tool));
+    document.querySelectorAll('.material-pill').forEach(b => b.classList.toggle('active', state.mode === 'tool' && b.dataset.material === state.material));
+    document.querySelectorAll('.armor-piece-pill').forEach(b => b.classList.toggle('active', state.mode === 'armor' && b.dataset.armorPiece === state.armorPiece));
+    document.querySelectorAll('.armor-material-pill').forEach(b => b.classList.toggle('active', state.mode === 'armor' && b.dataset.armorMaterial === state.armorMaterial));
+    document.querySelectorAll('.block-btn').forEach(b => b.classList.toggle('active', state.mode === 'block' && b.dataset.block === state.blockKey));
+    document.querySelectorAll('.wood-pill').forEach(b => b.classList.toggle('active', b.dataset.wood === state.wood));
+  }
+
+  // ================= BUILD UI =================
+  // Tool pills
+  const toolPillsEl = document.getElementById('toolPills');
+  Object.entries(TOOLS).forEach(([key, t]) => {
+    const btn = document.createElement('button');
+    btn.dataset.tool = key;
+    btn.className = 'tool-pill flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800/60 border border-white/10 text-slate-300 text-sm font-semibold transition-colors';
+    btn.innerHTML = `${iconImg(toolIconFile(key), t.label, 'w-5 h-5')}<span>${t.label}</span>`;
+    btn.addEventListener('click', () => { state.mode = 'tool'; state.tool = key; renderCurrent(); });
+    toolPillsEl.appendChild(btn);
+  });
+
+  // Material pills
+  const materialPillsEl = document.getElementById('materialPills');
+  Object.entries(MATERIALS).forEach(([key, m]) => {
+    const btn = document.createElement('button');
+    btn.dataset.material = key;
+    btn.className = 'material-pill flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800/60 border border-white/10 text-slate-300 text-sm font-semibold transition-colors';
+    btn.innerHTML = `${iconImg(ICONS[m.ingredient].img, m.label, 'w-5 h-5')}<span>${m.label}</span>`;
+    btn.addEventListener('click', () => { state.mode = 'tool'; state.material = key; renderCurrent(); });
+    materialPillsEl.appendChild(btn);
+  });
+
+  // Armor piece pills
+  const armorPiecePillsEl = document.getElementById('armorPiecePills');
+  Object.entries(ARMOR_PIECES).forEach(([key, p]) => {
+    const btn = document.createElement('button');
+    btn.dataset.armorPiece = key;
+    btn.className = 'armor-piece-pill flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800/60 border border-white/10 text-slate-300 text-sm font-semibold transition-colors';
+    btn.innerHTML = `${iconImg(armorIconFile(key), p.label, 'w-5 h-5')}<span>${p.label}</span>`;
+    btn.addEventListener('click', () => { state.mode = 'armor'; state.armorPiece = key; renderCurrent(); });
+    armorPiecePillsEl.appendChild(btn);
+  });
+
+  // Armor material pills
+  const armorMaterialPillsEl = document.getElementById('armorMaterialPills');
+  Object.entries(ARMOR_MATERIALS).forEach(([key, m]) => {
+    const btn = document.createElement('button');
+    btn.dataset.armorMaterial = key;
+    btn.className = 'armor-material-pill flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800/60 border border-white/10 text-slate-300 text-sm font-semibold transition-colors';
+    btn.innerHTML = `${iconImg(ICONS[m.ingredient].img, m.label, 'w-5 h-5')}<span>${m.label}</span>`;
+    btn.addEventListener('click', () => { state.mode = 'armor'; state.armorMaterial = key; renderCurrent(); });
+    armorMaterialPillsEl.appendChild(btn);
+  });
+
+  // Block recipe lists, split by category into their own sidebar cards
+  function buildBlockList(containerId, filterFn) {
+    const el = document.getElementById(containerId);
+    Object.entries(BLOCK_RECIPES).filter(([key, r]) => filterFn(r)).forEach(([key, r]) => {
+      const btn = document.createElement('button');
+      btn.dataset.block = key;
+      btn.className = 'block-btn recipe-btn flex items-center gap-3 text-left px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-slate-300 font-medium transition-colors';
+      btn.innerHTML = `${iconImg(r.img, r.name, 'w-7 h-7')}<span>${r.name}</span>`;
+      btn.addEventListener('click', () => { state.mode = 'block'; state.blockKey = key; renderCurrent(); });
+      el.appendChild(btn);
+    });
+  }
+  buildBlockList('woodBlockList', r => r.category === 'bois');
+  buildBlockList('stoneBlockList', r => r.category === 'pierre');
+  buildBlockList('blockRecipeList', r => r.category === 'util');
+
+  // Wood pills (shown for every wood-derived recipe)
+  const woodPillsEl = document.getElementById('woodPillsRow');
+  WOODS.forEach(w => {
+    const btn = document.createElement('button');
+    btn.dataset.wood = w.key;
+    btn.className = 'wood-pill flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/60 border border-white/10 text-slate-300 text-xs font-semibold transition-colors';
+    btn.innerHTML = `<span class="w-3 h-3 rounded-full inline-block" style="background:${w.color}"></span><span>${w.label}</span>`;
+    btn.addEventListener('click', () => { state.wood = w.key; renderCurrent(); });
+    woodPillsEl.appendChild(btn);
+  });
+
+  // Tool material stats (shown inline in the "Outils" guide facet)
+  const toolMaterialStatsEl = document.getElementById('toolMaterialStats');
+  Object.entries(MATERIALS).forEach(([key, m]) => {
+    const card = document.createElement('div');
+    card.className = 'bg-slate-800/60 border border-white/10 rounded-xl p-4';
+    card.innerHTML = `
+      <p class="font-bold text-white flex items-center gap-2">${iconImg(ICONS[m.ingredient].img, m.label, 'w-5 h-5')} ${m.label}</p>
+      <div class="mt-3 space-y-1.5 text-xs">
+        <p class="flex justify-between text-slate-400"><span>Vitesse</span><span class="text-slate-200 font-semibold">${m.miningSpeed}</span></p>
+        <p class="flex justify-between text-slate-400"><span>Durabilité</span><span class="text-slate-200 font-semibold">${m.durability}</span></p>
+        <p class="flex justify-between text-slate-400"><span>Dégâts</span><span class="text-slate-200 font-semibold">${m.damage}</span></p>
+        <p class="flex justify-between text-slate-400"><span>Pour l'obtenir</span><span class="text-slate-200 font-semibold text-right">${m.requirement}</span></p>
+      </div>
+    `;
+    toolMaterialStatsEl.appendChild(card);
+  });
+
+  // ================= GUIDE FACET CONTENT =================
+
+  // Élevage : animal -> aliment(s) de reproduction
+  const BREEDING = [
+    { animal: 'Vache', animalImg: 'cow_spawn_egg.png', foods: [{ img: 'wheat.png', label: 'Blé' }] },
+    { animal: 'Mouton', animalImg: 'sheep_spawn_egg.png', foods: [{ img: 'wheat.png', label: 'Blé' }] },
+    { animal: 'Cochon', animalImg: 'pig_spawn_egg.png', foods: [{ img: 'carrot.png', label: 'Carotte' }, { img: 'potato.png', label: 'Pomme de terre' }, { img: 'beetroot.png', label: 'Betterave' }] },
+    { animal: 'Poulet', animalImg: 'chicken_spawn_egg.png', foods: [{ img: 'wheat_seeds.png', label: 'Graines de blé' }] },
+    { animal: 'Lapin', animalImg: 'rabbit_spawn_egg.png', foods: [{ img: 'carrot.png', label: 'Carotte' }, { img: 'golden_carrot.png', label: 'Carotte dorée' }, { img: 'dandelion.png', label: 'Pissenlit' }] },
+  ];
+  const breedingTableEl = document.getElementById('breedingTable');
+  BREEDING.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="bg-slate-800/60 rounded-l-lg px-3 py-2 w-1/3">
+        <span class="flex items-center gap-2 font-semibold text-white">${iconImg(row.animalImg, row.animal, 'w-6 h-6')} ${row.animal}</span>
+      </td>
+      <td class="bg-slate-800/60 rounded-r-lg px-3 py-2">
+        <span class="flex flex-wrap items-center gap-3 text-slate-300">${row.foods.map(f => `<span class="flex items-center gap-1.5">${iconImg(f.img, f.label, 'w-5 h-5')} ${f.label}</span>`).join('')}</span>
+      </td>
+    `;
+    breedingTableEl.appendChild(tr);
+  });
+
+  // Valeurs nutritives (points de faim restaurés)
+  const FOODS = [
+    { img: 'bread.png', label: 'Pain', points: 5 },
+    { img: 'cooked_beef.png', label: 'Steak cuit', points: 8 },
+    { img: 'cooked_porkchop.png', label: 'Porc cuit', points: 8 },
+    { img: 'cooked_chicken.png', label: 'Poulet cuit', points: 6 },
+    { img: 'baked_potato.png', label: 'Pomme de terre cuite', points: 5 },
+    { img: 'golden_carrot.png', label: 'Carotte dorée', points: 6 },
+    { img: 'carrot.png', label: 'Carotte', points: 3 },
+    { img: 'apple.png', label: 'Pomme', points: 4 },
+  ];
+  const foodTableEl = document.getElementById('foodTable');
+  FOODS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'bg-slate-800/60 border border-white/10 rounded-xl p-3 flex flex-col items-center text-center gap-1.5';
+    card.innerHTML = `${iconImg(f.img, f.label, 'w-9 h-9')}<p class="text-xs font-semibold text-white">${f.label}</p><p class="text-[11px] text-mcgreen-400">+${f.points} faim</p>`;
+    foodTableEl.appendChild(card);
+  });
+
+  // Villageois : métier -> poste de travail
+  const VILLAGER_JOBS = [
+    { job: 'Fermier', station: 'Composteur', img: 'composter_top.png' },
+    { job: 'Boucher', station: 'Fumoir', img: 'smoker_front.png' },
+    { job: 'Bibliothécaire', station: 'Lutrin', img: 'lectern_front.png' },
+    { job: 'Armurier', station: 'Four à lave', img: 'blast_furnace_front.png' },
+    { job: "Forgeron d'armes", station: 'Meule', img: 'grindstone_side.png' },
+    { job: 'Clerc', station: 'Support de brassage', img: 'brewing_stand.png' },
+    { job: 'Cartographe', station: 'Table de cartographie', img: 'cartography_table_top.png' },
+    { job: 'Pêcheur', station: 'Baril', img: 'barrel_top.png' },
+    { job: 'Berger', station: 'Métier à tisser', img: 'loom_front.png' },
+    { job: 'Tanneur', station: 'Chaudron', img: 'cauldron_top.png' },
+    { job: 'Maçon', station: 'Tailleur de pierre', img: 'stonecutter_side.png' },
+    { job: 'Fléchier', station: 'Table du fléchier', img: 'fletching_table_front.png' },
+  ];
+  const villagerTableEl = document.getElementById('villagerTable');
+  VILLAGER_JOBS.forEach(v => {
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-3 bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2.5';
+    row.innerHTML = `${iconImg(v.img, v.station, 'w-8 h-8')}<span><span class="block text-sm font-semibold text-white">${v.job}</span><span class="block text-xs text-slate-500">${v.station}</span></span>`;
+    villagerTableEl.appendChild(row);
+  });
+
+  // Armor material stats showcase (in the guide facet)
+  const armorStatsShowcaseEl = document.getElementById('armorStatsShowcase');
+  Object.entries(ARMOR_MATERIALS).forEach(([key, m]) => {
+    const card = document.createElement('div');
+    card.className = 'bg-slate-800/60 border border-white/10 rounded-xl p-4';
+    card.innerHTML = `
+      <p class="font-bold text-white flex items-center gap-2">${iconImg(armorIconFile('plastron', key), m.label, 'w-6 h-6')} ${m.label}</p>
+      <div class="mt-3 space-y-1.5 text-xs">
+        <p class="flex justify-between text-slate-400"><span>Protection</span><span class="text-slate-200 font-semibold text-right">${m.protection}</span></p>
+        <p class="flex justify-between text-slate-400"><span>Durabilité</span><span class="text-slate-200 font-semibold">${m.durability}</span></p>
+        <p class="flex justify-between text-slate-400"><span>Pour l'obtenir</span><span class="text-slate-200 font-semibold text-right">${m.requirement}</span></p>
+      </div>
+    `;
+    armorStatsShowcaseEl.appendChild(card);
+  });
+
+  // Tool utility cards (what each tool is actually for)
+  const TOOL_UTILITY = [
+    { tool: 'pioche', desc: 'Mine la pierre, les minerais et la plupart des blocs durs. Sans elle, ces blocs ne donnent rien à la récolte.' },
+    { tool: 'hache', desc: "Coupe le bois beaucoup plus vite et peut désécorcer un tronc (clic droit dessus)." },
+    { tool: 'pelle', desc: "Creuse terre, sable, gravier et neige plus vite ; transforme l'herbe en chemin (clic droit)." },
+    { tool: 'houe', desc: "Laboure la terre en terre agricole pour cultiver (clic droit sur de l'herbe ou de la terre)." },
+    { tool: 'epee', desc: "Inflige bien plus de dégâts au combat qu'un outil ou qu'un poing nu." },
+  ];
+  const toolUtilityGridEl = document.getElementById('toolUtilityGrid');
+  TOOL_UTILITY.forEach(u => {
+    const t = TOOLS[u.tool];
+    const card = document.createElement('div');
+    card.className = 'bg-slate-800/60 border border-white/10 rounded-xl p-3 flex items-start gap-3';
+    card.innerHTML = `${iconImg(toolIconFile(u.tool, 'pierre'), t.label, 'w-9 h-9 shrink-0')}<span><span class="block text-sm font-semibold text-white">${t.label}</span><span class="block text-xs text-slate-400 mt-0.5">${u.desc}</span></span>`;
+    toolUtilityGridEl.appendChild(card);
+  });
+
+  // Monstres : comportement et comment y faire face
+  const MOBS = [
+    { img: 'zombie_spawn_egg.png', label: 'Zombie', desc: 'Attaque au corps-à-corps et brûle au soleil. Facile à éviter en reculant et en frappant.' },
+    { img: 'skeleton_spawn_egg.png', label: 'Squelette', desc: 'Tire des flèches à distance et brûle au soleil. Approchez-vous vite ou protégez-vous avec un bouclier.' },
+    { img: 'creeper_spawn_egg.png', label: 'Creeper', desc: "Explose silencieusement à votre approche. Reculez dès le sifflement, ou frappez-le pour l'exploser à distance." },
+    { img: 'spider_spawn_egg.png', label: 'Araignée', desc: 'Grimpe aux murs et devient hostile la nuit ou dans les grottes sombres, neutre en pleine journée.' },
+    { img: 'enderman_spawn_egg.png', label: 'Enderman', desc: 'Neutre sauf si on le regarde dans les yeux. Se téléporte et frappe fort — évitez le contact visuel.' },
+    { img: 'witch_spawn_egg.png', label: 'Sorcière', desc: 'Lance des potions offensives à distance et boit des potions de soin. Approchez-vous pour l\'empêcher de viser.' },
+  ];
+  const mobsGridEl = document.getElementById('mobsGrid');
+  MOBS.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'bg-slate-800/60 border border-white/10 rounded-xl p-3 flex items-start gap-3';
+    card.innerHTML = `${iconImg(m.img, m.label, 'w-9 h-9 shrink-0')}<span><span class="block text-sm font-semibold text-white">${m.label}</span><span class="block text-xs text-slate-400 mt-0.5">${m.desc}</span></span>`;
+    mobsGridEl.appendChild(card);
+  });
+
+  // Minerais : profondeur et pioche minimale
+  const ORES = [
+    { img: 'coal_ore.png', label: 'Charbon', depth: 'Partout, dès la surface', pickaxe: 'bois' },
+    { img: 'iron_ore.png', label: 'Fer', depth: 'Niveau Y 16 et en dessous, ou en montagne', pickaxe: 'bois' },
+    { img: 'copper_ore.png', label: 'Cuivre', depth: 'Niveau Y 0 à 96', pickaxe: 'pierre' },
+    { img: 'lapis_ore.png', label: 'Lapis-lazuli', depth: 'Niveau Y -64 à 64', pickaxe: 'pierre' },
+    { img: 'redstone_ore.png', label: 'Redstone', depth: 'Niveau Y -64 à 16', pickaxe: 'fer' },
+    { img: 'gold_ore.png', label: 'Or', depth: 'Niveau Y -64 à 32, ou dans les badlands', pickaxe: 'fer' },
+    { img: 'diamond_ore.png', label: 'Diamant', depth: 'Niveau Y -64 à 16 (pic vers Y -59)', pickaxe: 'fer' },
+    { img: 'emerald_ore.png', label: 'Émeraude', depth: 'Uniquement en montagne', pickaxe: 'fer' },
+  ];
+  const oresTableEl = document.getElementById('oresTable');
+  ORES.forEach(o => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="bg-slate-800/60 rounded-l-lg px-3 py-2 w-1/3">
+        <span class="flex items-center gap-2 font-semibold text-white">${iconImg(o.img, o.label, 'w-6 h-6')} ${o.label}</span>
+      </td>
+      <td class="bg-slate-800/60 px-3 py-2 text-slate-300">${o.depth}</td>
+      <td class="bg-slate-800/60 rounded-r-lg px-3 py-2">
+        <span class="flex items-center gap-1.5 text-slate-300 whitespace-nowrap">${iconImg(toolIconFile('pioche', o.pickaxe), 'Pioche', 'w-5 h-5')} min.</span>
+      </td>
+    `;
+    oresTableEl.appendChild(tr);
+  });
+
+  // Enchantements courants
+  const ENCHANTMENTS = [
+    { img: 'diamond_pickaxe.png', label: 'Efficacité', desc: 'Mine plus vite (outils)' },
+    { img: 'diamond_chestplate.png', label: 'Protection', desc: 'Réduit les dégâts (armure)' },
+    { img: 'diamond_sword.png', label: 'Tranchant', desc: 'Augmente les dégâts (épée)' },
+    { img: 'anvil.png', label: 'Solidité', desc: 'Augmente la durabilité' },
+  ];
+  const enchantGridEl = document.getElementById('enchantGrid');
+  ENCHANTMENTS.forEach(e => {
+    const card = document.createElement('div');
+    card.className = 'bg-slate-800/60 border border-white/10 rounded-xl p-3 flex flex-col items-center text-center gap-1.5';
+    card.innerHTML = `${iconImg(e.img, e.label, 'w-9 h-9')}<p class="text-xs font-semibold text-white">${e.label}</p><p class="text-[11px] text-slate-500">${e.desc}</p>`;
+    enchantGridEl.appendChild(card);
+  });
+
+  // initial render
+  renderCurrent();
+</script>
+</body>
+</html>
